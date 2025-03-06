@@ -6,9 +6,6 @@
 
 <span align="center">
     
-![GitHub repo size](https://img.shields.io/github/repo-size/Arielanaskar/app_kasir_restoran)
-![GitHub last commit](https://img.shields.io/github/last-commit/Arielanaskar/app_kasir_restoran)
-    
 </span>
 
 <hr/>
