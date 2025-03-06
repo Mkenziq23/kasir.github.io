@@ -1,10 +1,11 @@
 <p align="center">
-<img src="https://i.ibb.co/Ps2bhfH/logo5.png" width="200px">
+<!-- <img src="https://i.ibb.co/Ps2bhfH/logo5.png" width="200px"> -->
 </p>
 
 <h1 align="center">Aplikasi Kasir Restoran</h1>
 
 <span align="center">
+
     
 </span>
 
