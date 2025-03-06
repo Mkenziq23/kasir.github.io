@@ -2,7 +2,7 @@
 <!-- <img src="https://i.ibb.co/Ps2bhfH/logo5.png" width="200px"> -->
 </p>
 
-<h1 align="center">Aplikasi Kasir Restoran</h1>
+<h1 align="center">Kasir</h1>
 
 <span align="center">
 
