@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('home', [
+        return view('/', [
             "total_menus" => Menu::count(),
 
             "total_sales" => Transaction::whereDate('created_at', now()->toDateString())
