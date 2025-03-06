@@ -12,45 +12,42 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::resource('/menu', MenuController::class)->missing(fn () => redirect()->back());
+    Route::resource('/transaction', TransactionController::class)->missing(fn () => redirect()->back());
+    Route::resource('/user', UserController::class)->missing(fn () => redirect()->back());
+    
+    Route::post('/user/delete', [UserController::class, 'destroy']);
+    
+    Route::get('/user/edit/{user}', function (User $user) {
+        if (Auth::user()->level_id !== $user->level_id) {
+            abort(403, 'Unauthorized action.');
+        }
+        return view('account.edit', [
+            'user' => User::with('level')->findOrFail($user->id)
+        ]);
+    });
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+    Route::post('/user/edit/{user}', [UserController::class, 'updateProfile']);
 
-Route::get('/', [DashboardController::class, 'index'])->middleware('auth');
-Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
-Route::post('/login', [LoginController::class, 'authenticate']);
-Route::post('/logout', [LoginController::class, 'logout']);
-
-Route::resource('/menu', MenuController::class)->middleware('auth')->missing(fn () => redirect()->back());
-Route::resource('/transaction', TransactionController::class)->middleware('auth')->missing(fn () => redirect()->back());
-Route::resource('/user', UserController::class)->middleware('auth')->missing(fn () => redirect()->back());
-Route::post('/user/delete', [UserController::class, 'destroy'])->middleware('auth');
-Route::get('/user/edit/{user}', function (User $user) {
-    if (Auth::user()->level_id !== $user->level_id) {
-        return redirect()->back();
-    }
-    return view('account.edit', [
-        'user' => $user->with('level')->where('id', $user->id)->get()
-    ]);
-})->middleware('auth');
-Route::post('/user/edit/{user}', [UserController::class, 'updateProfile'])->middleware('auth');
-
-Route::get('/menus/shows', [MenuController::class, 'show']);
-
-Route::get('/activityLog', [ActivityLogController::class, 'index']);
-
-Route::get('/invoice/{transaction}', function (Transaction $transaction) {
-    return View('transaction.invoice', [
-        'data' => $transaction->with(['transaction_details', 'transaction_details.menu', 'user'])->where('id',$transaction->id)->get()
-    ]);
+    Route::get('/menus/shows', [MenuController::class, 'show']);
+    Route::get('/activityLog', [ActivityLogController::class, 'index']);
+    Route::get('/report', [ReportController::class, 'index']);
+    
+    Route::get('/invoice/{transaction}', function (Transaction $transaction) {
+        return view('transaction.invoice', [
+            'data' => Transaction::with(['transaction_details', 'transaction_details.menu', 'user'])
+                        ->findOrFail($transaction->id)
+        ]);
+    });
 });
 
-Route::get('/report', [ReportController::class, 'index'])->middleware('auth');
+// Rute login tanpa autentikasi
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::post('/login', [LoginController::class, 'authenticate']);
+});
+
+// Logout tetap menggunakan autentikasi
+Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');

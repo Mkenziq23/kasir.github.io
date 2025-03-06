@@ -46,8 +46,9 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Admin</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ $admin[0]->admin }}
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ $admin }}
                         user</small>
+
                 </div>
             </div>
         </div>
@@ -62,7 +63,7 @@
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Manager</span>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
-                        {{ $manager[0]->manager }} user</small>
+                        {{ $manager }} user</small>
                 </div>
             </div>
         </div>
@@ -77,7 +78,7 @@
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Cashier</span>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
-                        {{ $cashier[0]->cashier }} user</small>
+                        {{ $cashier }} user</small>
                 </div>
             </div>
         </div>
@@ -92,7 +93,7 @@
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Total user</span>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
-                        {{ $total_user[0]->total_user }} user</small>
+                        {{ $total_user }} user</small>
                 </div>
             </div>
         </div>

@@ -47,7 +47,7 @@
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Sales</span>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>Rp
-                        {{ number_format($total_sales[0]->total_sales, 0, ',', '.') }}</small>
+                        {{ number_format($total_sales, 0, ',', '.') }}</small>
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Income</span>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>Rp
-                        {{ number_format($total_income[0]->total_income, 0, ',', '.') }} </small>
+                        {{ number_format($total_income, 0, ',', '.') }} </small>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Invoice</span>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
-                        {{ $invoice[0]->total_invoice }}</small>
+                        {{ $invoice }}</small>
                 </div>
             </div>
         </div>
