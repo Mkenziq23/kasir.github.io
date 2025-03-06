@@ -12,6 +12,12 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+Route::get('/', function () {
+    return view('home', [
+        "title" => "Home"
+    ]);
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::resource('/menu', MenuController::class)->missing(fn () => redirect()->back());
