@@ -1,103 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/images/logofood.ico"> 
-    <title>Invoice</title>
-
-    <!-- FontAwesome JS-->
-    <script defer src="/plugins/fontawesome/js/all.min.js"></script>
-
-    <!-- App CSS -->  
-    <link rel="stylesheet" href="/css/portal.css">
+    <title>Invoice - Pondok Selera</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.1-web/css/all.css">
+    <link rel="shortcut icon" href="/images/logo.png">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .invoice-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 50px;
+        }
+
+        .header-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #dc3545;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="card">
-        <div class="card-body mx-4">
-            <div class="container">
-            <p class="my-5 mb-0 text-center" style="font-size: 30px;">Foodoso</p>
-            <p class="mt-0 mb-1 text-center" style="font-size: 15px;">Jl M. H. Thamrin, No. 9</p>
-            <p class="mt-0 mb-4 text-center" style="font-size: 15px;">221-691-6080</p>
-            @foreach ($data as $key)
-                @php
-                    $datetime = explode(' ', $key->created_at)[0];
-                    $date = \Carbon\Carbon::parse($datetime);
+    <div class="invoice-container mt-5 p-4">
+        <div class="text-center">
+            <img src="/images/logo.png" alt="Logo" class="logo" style="width: 10rem">
+            <p class="header-text">Pondok Selera</p>
+            <p class="text-muted">Jl. PB.Sudirman No.81, Umbulsari, Kaliboto Lor, Kec. Jatiroto, Kabupaten Lumajang,
+                Jawa Timur</p>
+            <p class="text-muted">0823-3114-9622</p>
+        </div>
 
-                    $times_ex = explode(' ', $key->created_at)[1];
-                    $times = \Carbon\Carbon::parse($times_ex);
-                    $time = explode(' ', $times->toDayDateTimeString());
-                @endphp
-                <div class="row">
-                    <ul class="list-unstyled">
-                        <li class="text-black">Cashier &nbsp : &nbsp{{ $key->user->name }}</li>
-                        <li class="text-muted mt-1"><span class="text-black">Table</span> {{ $key->no_table }}</li>
-                        <li class="text-black mt-1">Date &nbsp : &nbsp {{ $date->toFormattedDateString() }} {{ $time[4].' '.$time[5] }}</li>
-                    </ul>
-                    <hr>
+        @foreach ($data as $key)
+            @php
+                $date = \Carbon\Carbon::parse($key->created_at)->toFormattedDateString();
+                $time = \Carbon\Carbon::parse($key->created_at)->format('H:i');
+            @endphp
+
+            <div class="mt-3">
+                <p><strong>Cashier:</strong> {{ $key->user->name }}</p>
+                <p><strong>Date:</strong> {{ $date }} - {{ $time }}</p>
+            </div>
+            <hr>
+
+            <table class="table table-borderless">
+                <thead class="border-bottom">
+                    <tr>
+                        <th>Item</th>
+                        <th class="text-center">Jumlah</th>
+                        <th class="text-end">Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
                     @foreach ($key->transaction_details as $item)
-                    <div class="col-xl-10">
-                        <p class="mb-0">{{ $item->menu->name }}</p>
-                        <p class="small text-muted">{{ $item->qty }} x {{ $item->menu->price }}</p>
-                    </div>
-                    <div class="col-xl-2">
-                        <p class="float-end">{{ number_format($item->price, 0, ',', '.') }}</p>
-                    </div>
-                    <hr>
+                        <tr>
+                            <td>{{ $item->menu->name }}</td>
+                            <td class="text-center">{{ $item->qty }}</td>
+                            <td class="text-end">{{ number_format($item->price, 0, ',', '.') }}</td>
+                        </tr>
                     @endforeach
-                </div>
-                <div class="row text-black">
-                    @php
-                        $arr = [];
-                        foreach($key->transaction_details as $item) {
-                            $arr[] = $item->price;
-                        };
+                </tbody>
+            </table>
 
-                        function myfunction($v1,$v2)
-                        {
-                            return $v1 + $v2;
-                        }
-
-                        $total = array_reduce($arr, "myfunction");
-                    @endphp
-
-                    <div class="col-xl-12">
-                        <p class="float-end fw-bold">SubTotal &nbsp: &nbsp &nbsp {{ number_format($total, 0, ',', '.') }}</p>
-                    </div>
-                    <div class="col-xl-12">
-                        <p class="float-end fw-bold">PPN &nbsp: &nbsp &nbsp &nbsp 10%</p>
-                    </div>
-                    <div class="col-xl-12">
-                        <p class="float-end fw-bold">Total &nbsp: &nbsp {{ number_format($key->total_transaction, 0,',','.') }}</p>
-                    </div>
-                    <hr style="border: 2px solid black;">
-                </div>
-                <h2 class="float-end total-payment">{{ number_format($key->total_payment, 0, ',', '.') }}</h2>
-            @endforeach
-            <div class="text-center" style="margin-top: 90px;">
-                <p class="mb-0 d-flex align-items-center justify-content-center"><u class="text-info text-decoration-none"><img src="/images/logofood.png" alt="" srcset="" width="20">Foodoso</u></p>
-                <p>Thanks for joining us at Foodoso. </p>
+            <div class="mt-3 border-top pt-2">
+                <p class="d-flex justify-content-between fw-bold">Total Pembelian: <span>Rp
+                        {{ number_format($key->total_transaction, 0, ',', '.') }}</span></p>
+                <p class="d-flex justify-content-between fw-bold">Uang Pembeli: <span>Rp
+                        {{ number_format($key->total_payment, 0, ',', '.') }}</span></p>
+                <p class="d-flex justify-content-between fw-bold text-success">Kembalian: <span>Rp
+                        {{ number_format($key->total_payment - $key->total_transaction, 0, ',', '.') }}</span></p>
             </div>
+        @endforeach
 
-            </div>
+        <div class="text-center mt-4">
+            <p class="mb-0">Terima kasih telah berbelanja di <span class="text-danger fw-bold">Pondok Selera</span>
+            </p>
+            <p>Semoga hari Anda menyenangkan!</p>
         </div>
     </div>
+
     <script>
-        window.onload = function () {
-            let totalPayment = document.querySelector('.total-payment');
-
-            if (totalPayment.innerText == '0') {
-                totalPayment.innerText = localStorage.getItem('payment');
-            } else {
-                localStorage.clear();
-                return false;
-            }
-
+        window.onload = function() {
             window.print();
         }
     </script>
 </body>
+
 </html>

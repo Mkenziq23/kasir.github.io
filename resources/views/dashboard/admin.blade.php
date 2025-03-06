@@ -4,11 +4,11 @@
             <div class="col-sm-7 ps-3">
                 <div class="card-body">
                     <h5 class="card-title text-primary">Wellcome Back {{ auth()->user()->name }}! 🎉</h5>
-                    <p class="mb-4 text-dark">
+                    {{-- <p class="mb-4 text-dark">
                         You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
                         your profile.
-                    </p>
-                    <a href="javascript:;" class="btn btn-sm btn-primary text-white">View Badges</a>
+                    </p> --}}
+                    {{-- <a href="javascript:;" class="btn btn-sm btn-primary text-white">View Badges</a> --}}
                 </div>
             </div>
             {{-- <div class="col-sm-5 text-center text-sm-left">
@@ -16,7 +16,8 @@
                     <img src="/images/dash-logo.png" height="200">
                 </div>
             </div> --}}
-            <div id="carouselExampleFade" class="col-sm-5 text-center text-sm-left carousel slide carousel-fade" data-bs-ride="carousel">
+            <div id="carouselExampleFade" class="col-sm-5 text-center text-sm-left carousel slide carousel-fade"
+                data-bs-ride="carousel">
                 <div class="carousel-inner" style="padding-left: 25%;">
                     <div class="carousel-item active">
                         <img src="/images/foodicon/food-icon1.png" class="d-block" height="180" alt="...">
@@ -45,7 +46,8 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Admin</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ $admin[0]->admin }} user</small>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ $admin[0]->admin }}
+                        user</small>
                 </div>
             </div>
         </div>
@@ -59,7 +61,8 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Manager</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ $manager[0]->manager }} user</small>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+                        {{ $manager[0]->manager }} user</small>
                 </div>
             </div>
         </div>
@@ -73,7 +76,8 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Cashier</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ $cashier[0]->cashier }} user</small>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+                        {{ $cashier[0]->cashier }} user</small>
                 </div>
             </div>
         </div>
@@ -87,7 +91,8 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Total user</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ $total_user[0]->total_user }} user</small>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+                        {{ $total_user[0]->total_user }} user</small>
                 </div>
             </div>
         </div>

@@ -24,9 +24,9 @@ class MenuController extends Controller
         }
 
         return view('menu.index', [
-            'foods' => $menu->where('category','food')->latest()->get(),
-            'drinks' => $menu->where('category', 'drink')->latest()->get(),
-            'dessert' => $menu->where('category', 'dessert')->latest()->get()
+            'makanan' => $menu->where('category','makanan')->latest()->get(),
+            'minuman' => $menu->where('category', 'minuman')->latest()->get(),
+            'camilan' => $menu->where('category', 'camilan')->latest()->get()
         ]);
     }
 
@@ -66,7 +66,8 @@ class MenuController extends Controller
 
         $validateddata["modal"] = filter_var($request->modal, FILTER_SANITIZE_NUMBER_INT);
         $validateddata["price"] = filter_var($request->price, FILTER_SANITIZE_NUMBER_INT);
-        $validateddata["picture"] = $request->file('image')->store('menu');
+        $validateddata["picture"] = $request->file('image')->store('menu', 'public');
+
 
         Menu::create($validateddata);
 
@@ -119,37 +120,48 @@ class MenuController extends Controller
      * @param  \App\Models\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Menu $menu)
-    {
-        $validateddata = $request->validate([
-            'name' => 'required|min:3',
-            'modal' => 'required|regex:/([0-9]+[.,]*)+/',
-            'price' => 'required|regex:/([0-9]+[.,]*)+/|gte:modal',
-            'category' => 'required',
-            'picture' => 'image|file|max:3048',
-            'description' => 'required'
-        ]);
+public function update(Request $request, Menu $menu)
+{
+    // Validasi input data
+    $validateddata = $request->validate([
+        'name' => 'required|min:3',
+        'modal' => 'required|regex:/([0-9]+[.,]*)+/',
+        'price' => 'required|regex:/([0-9]+[.,]*)+/|gte:modal',
+        'category' => 'required',
+        'picture' => 'image|file|max:3048', // Gambar opsional, hanya jika ada
+        'description' => 'required'
+    ]);
 
+    // Hilangkan separator ribuan pada modal dan harga sebelum menyimpan
+    $validateddata["modal"] = (int) str_replace(['.', ','], '', $request->modal);
+    $validateddata["price"] = (int) str_replace(['.', ','], '', $request->price);
 
-        $validateddata["modal"] = filter_var($request->modal, FILTER_SANITIZE_NUMBER_INT);
-        $validateddata["price"] = filter_var($request->price, FILTER_SANITIZE_NUMBER_INT);
-
-        if ($request->file('picture')) {
-            Storage::delete($menu->picture);
-            $validateddata['picture'] = $request->file('picture')->store('menu'); 
+    // Proses gambar baru jika ada
+    if ($request->hasFile('picture')) {
+        // Hapus gambar lama dari storage jika ada
+        if ($menu->picture && Storage::exists('public/' . $menu->picture)) {
+            Storage::delete('public/' . $menu->picture);
         }
         
-        Menu::where('id', $menu->id)
-             ->update($validateddata);
-
-        $activity = [
-            'user_id' => Auth::id(),
-            'action' => 'edited a menu '.strtolower($menu->name)
-        ];
-        ActivityLog::create($activity);
-
-        return redirect('/menu')->with('success', 'menu has been updated !');
+        // Simpan gambar baru ke folder 'menu' dalam disk 'public'
+        $validateddata['picture'] = $request->file('picture')->store('menu', 'public');
     }
+
+    // Update menu dengan data yang sudah divalidasi
+    $menu->update($validateddata);
+
+    // Log aktivitas pengguna
+    $activity = [
+        'user_id' => Auth::id(),
+        'action' => 'edited a menu ' . strtolower($menu->name)
+    ];
+    ActivityLog::create($activity);
+
+    // Redirect dengan pesan sukses
+    return redirect('/menu')->with('success', 'Menu has been updated!');
+}
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -159,15 +171,25 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        Storage::delete($menu->picture);   
-        $menu->destroy($menu->id);
+        // Cek apakah gambar ada dan hapus dari storage
+        if ($menu->picture && Storage::exists('public/' . $menu->picture)) {
+            Storage::delete('public/' . $menu->picture);
+        }
+
+        // Hapus menu dari database
+        $menu->delete();
+
+        // Log aktivitas pengguna
         $activity = [
             'user_id' => Auth::id(),
-            'action' => 'deleted a menu '.strtolower($menu->name)
+            'action' => 'deleted a menu ' . strtolower($menu->name)
         ];
         ActivityLog::create($activity);
-        return redirect('/menu');
+
+        // Redirect kembali ke halaman menu dengan pesan sukses
+        return redirect('/menu')->with('success', 'Menu has been deleted!');
     }
+
 
 }
 

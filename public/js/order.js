@@ -65,7 +65,7 @@ Addtocart.forEach((e, i) => {
                 </div>`
         }
         total_price += parseInt(priceProduct[i].innerText.split(".").join(''));
-        fixed_price = total_price + (total_price * 10 / 100);
+        fixed_price = total_price;
         subtotal.innerText = `Rp ${formatRupiah(total_price.toString())}`;
         total_transaction.innerText = `Rp ${formatRupiah(fixed_price.toString())}`;
         input_transaction.value = fixed_price;

@@ -80,10 +80,10 @@ class TransactionController extends Controller
         }
         
         return view('transaction.create', [
-            'foods' => $menu->where('category','food')->latest()->get(),
-            'drinks' => $menu->where('category', 'drink')->latest()->get(),
-            'desserts' => $menu->where('category', 'dessert')->latest()->get(),
-            'tables' => Transaction::select('no_table')->where('status','unpaid')->get()
+            'makanan' => $menu->where('category','makanan')->latest()->get(),
+            'minuman' => $menu->where('category', 'minuman')->latest()->get(),
+            'camilan' => $menu->where('category', 'camilan')->latest()->get(),
+            // 'tables' => Transaction::select('no_table')->where('status','unpaid')->get()
         ]);
     }
 
@@ -96,7 +96,7 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $transaction = $request->validate([
-            'no_table' => 'required',
+            // 'no_table' => 'required',
             'total_transaction' => 'required' 
         ]);
         $transaction['user_id'] = auth()->user()->id;

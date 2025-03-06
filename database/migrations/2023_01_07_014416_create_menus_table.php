@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('description');
             $table->string('picture');
-            $table->enum('category',['food','drink']);
+            $table->enum('category',['makanan','minuman', 'camilan']);
             $table->timestamps();
         });
     }

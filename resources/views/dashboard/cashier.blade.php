@@ -4,11 +4,11 @@
             <div class="col-sm-7 ps-3">
                 <div class="card-body">
                     <h5 class="card-title text-primary">Wellcome Back {{ auth()->user()->name }}! 🎉</h5>
-                    <p class="mb-4 text-dark">
+                    {{-- <p class="mb-4 text-dark">
                         You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
                         your profile.
                     </p>
-                    <a href="javascript:;" class="btn btn-sm btn-primary text-white">View Badges</a>
+                    <a href="javascript:;" class="btn btn-sm btn-primary text-white">View Badges</a> --}}
                 </div>
             </div>
             {{-- <div class="col-sm-5 text-center text-sm-left">
@@ -16,7 +16,8 @@
                     <img src="/images/dash-logo.png" height="200">
                 </div>
             </div> --}}
-            <div id="carouselExampleFade" class="col-sm-5 text-center text-sm-left carousel slide carousel-fade" data-bs-ride="carousel">
+            <div id="carouselExampleFade" class="col-sm-5 text-center text-sm-left carousel slide carousel-fade"
+                data-bs-ride="carousel">
                 <div class="carousel-inner" style="padding-left: 25%;">
                     <div class="carousel-item active">
                         <img src="/images/foodicon/food-icon1.png" class="d-block" height="180" alt="...">
@@ -45,7 +46,8 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">paid</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>{{ $total_paid[0]->total_paid }}</small>
+                    <small class="text-success fw-semibold"><i
+                            class="bx bx-up-arrow-alt"></i>{{ $total_paid[0]->total_paid }}</small>
                 </div>
             </div>
         </div>
@@ -59,11 +61,12 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">unpaid</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ $total_unpaid[0]->total_unpaid }}</small>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+                        {{ $total_unpaid[0]->total_unpaid }}</small>
                 </div>
             </div>
         </div>
-        <div class="col-lg-5 col-md-12 col-6 mb-4 shadow rounded">
+        {{-- <div class="col-lg-5 col-md-12 col-6 mb-4 shadow rounded">
             <div class="card">
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between">
@@ -73,10 +76,11 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Tables</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ 20 - (int)$tables[0]->tables }}</small>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+                        {{ 20 - (int) $tables[0]->tables }}</small>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="col-lg-5 col-md-12 col-6 mb-4 shadow rounded">
             <div class="card">
                 <div class="card-body">
@@ -87,7 +91,8 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1 text-dark">Sales</span>
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> Rp {{ number_format($total_sales[0]->total_sales,0,',','.') }}</small>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> Rp
+                        {{ number_format($total_sales[0]->total_sales, 0, ',', '.') }}</small>
                 </div>
             </div>
         </div>
